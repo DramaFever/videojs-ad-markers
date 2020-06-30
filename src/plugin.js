@@ -28,10 +28,6 @@ class AdMarkers extends Plugin {
     this.player.ready(() => {
       this.player.addClass('vjs-ad-markers');
     });
-
-    /* this.player.on('adsready', () => {
-      this.initialize();
-    }); */
   }
 
   setMarkers(options) {
@@ -152,8 +148,6 @@ class AdMarkers extends Plugin {
   initialize() {
     if (this.isInitialized === false) {
       this.isInitialized = true;
-      // remove existing adMarkers if already initialized
-      // this.removeAll();
       this.addMarkers(this.options.markers);
     }
   }

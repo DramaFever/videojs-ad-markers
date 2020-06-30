@@ -13,9 +13,7 @@ function _inheritsLoose(subClass, superClass) {
 
 var version = "2.0.0";
 
-var Plugin = videojs.getPlugin('plugin'); // Default options for the plugin.
-//const defaults = {};
-
+var Plugin = videojs.getPlugin('plugin');
 /**
  * An advanced Video.js plugin. For more information on the API
  *
@@ -46,10 +44,6 @@ function (_Plugin) {
     _this.player.ready(function () {
       _this.player.addClass('vjs-ad-markers');
     });
-    /* this.player.on('adsready', () => {
-      this.initialize();
-    }); */
-
 
     return _this;
   }
@@ -170,9 +164,7 @@ function (_Plugin) {
 
   _proto.initialize = function initialize() {
     if (this.isInitialized === false) {
-      this.isInitialized = true; // remove existing adMarkers if already initialized
-      // this.removeAll();
-
+      this.isInitialized = true;
       this.addMarkers(this.options.markers);
     }
   };
