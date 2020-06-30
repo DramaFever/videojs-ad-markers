@@ -3,9 +3,6 @@ import {version as VERSION} from '../package.json';
 
 const Plugin = videojs.getPlugin('plugin');
 
-// Default options for the plugin.
-const defaults = {};
-
 /**
  * An advanced Video.js plugin. For more information on the API
  *
@@ -18,20 +15,12 @@ class AdMarkers extends Plugin {
    *
    * @param  {Player} player
    *         A Video.js Player instance.
-   *
-   * @param  {Object} [options]
-   *         An optional options object.
-   *
-   *         While not a core part of the Video.js plugin architecture, a
-   *         second argument of options is a convenient way to accept inputs
-   *         from your plugin's caller.
    */
-  constructor(player, options) {
+  constructor(player) {
     // the parent class will add player under this.player
     super(player);
 
-    this.options = videojs.mergeOptions(defaults, options);
-
+    this.options = {};
     this.markersMap = {};
     this.markersList = [];
     this.isInitialized = false;
@@ -40,9 +29,18 @@ class AdMarkers extends Plugin {
       this.player.addClass('vjs-ad-markers');
     });
 
-    this.player.on('adsready', () => {
+    /* this.player.on('adsready', () => {
       this.initialize();
-    });
+    }); */
+  }
+
+  setMarkers(options) {
+    this.options = videojs.mergeOptions(this.options, options);
+
+    this.markersMap = {};
+    this.markersList = [];
+    this.isInitialized = false;
+    this.initialize();
   }
 
   generateUUID() {
@@ -73,6 +71,10 @@ class AdMarkers extends Plugin {
   }
 
   addMarkers(newMarkers) {
+
+    if (!newMarkers || newMarkers.length === 0) {
+      return;
+    }
 
     // create the adMarkers
     newMarkers.forEach((marker, index) => {
@@ -117,6 +119,7 @@ class AdMarkers extends Plugin {
       indexArray.push(i);
     }
     this.removeMarkers(indexArray);
+    this.isInitialized = false;
   }
 
   removeMarkers(indexArray) {
@@ -150,7 +153,7 @@ class AdMarkers extends Plugin {
     if (this.isInitialized === false) {
       this.isInitialized = true;
       // remove existing adMarkers if already initialized
-      this.removeAll();
+      // this.removeAll();
       this.addMarkers(this.options.markers);
     }
   }

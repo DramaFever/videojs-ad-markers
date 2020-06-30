@@ -16,8 +16,8 @@
   var version = "2.0.0";
 
   var Plugin = videojs.getPlugin('plugin'); // Default options for the plugin.
+  //const defaults = {};
 
-  var defaults = {};
   /**
    * An advanced Video.js plugin. For more information on the API
    *
@@ -34,20 +34,13 @@
      *
      * @param  {Player} player
      *         A Video.js Player instance.
-     *
-     * @param  {Object} [options]
-     *         An optional options object.
-     *
-     *         While not a core part of the Video.js plugin architecture, a
-     *         second argument of options is a convenient way to accept inputs
-     *         from your plugin's caller.
      */
-    function AdMarkers(player, options) {
+    function AdMarkers(player) {
       var _this;
 
       // the parent class will add player under this.player
       _this = _Plugin.call(this, player) || this;
-      _this.options = videojs.mergeOptions(defaults, options);
+      _this.options = {};
       _this.markersMap = {};
       _this.markersList = [];
       _this.isInitialized = false;
@@ -55,15 +48,23 @@
       _this.player.ready(function () {
         _this.player.addClass('vjs-ad-markers');
       });
+      /* this.player.on('adsready', () => {
+        this.initialize();
+      }); */
 
-      _this.player.on('adsready', function () {
-        _this.initialize();
-      });
 
       return _this;
     }
 
     var _proto = AdMarkers.prototype;
+
+    _proto.setMarkers = function setMarkers(options) {
+      this.options = videojs.mergeOptions(this.options, options);
+      this.markersMap = {};
+      this.markersList = [];
+      this.isInitialized = false;
+      this.initialize();
+    };
 
     _proto.generateUUID = function generateUUID() {
       var d = new Date().getTime();
@@ -95,7 +96,11 @@
     _proto.addMarkers = function addMarkers(newMarkers) {
       var _this3 = this;
 
-      // create the adMarkers
+      if (!newMarkers || newMarkers.length === 0) {
+        return;
+      } // create the adMarkers
+
+
       newMarkers.forEach(function (marker, index) {
         marker.key = _this3.generateUUID();
 
@@ -137,6 +142,7 @@
       }
 
       this.removeMarkers(indexArray);
+      this.isInitialized = false;
     };
 
     _proto.removeMarkers = function removeMarkers(indexArray) {
@@ -167,8 +173,8 @@
     _proto.initialize = function initialize() {
       if (this.isInitialized === false) {
         this.isInitialized = true; // remove existing adMarkers if already initialized
+        // this.removeAll();
 
-        this.removeAll();
         this.addMarkers(this.options.markers);
       }
     };
