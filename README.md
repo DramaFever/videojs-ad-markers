@@ -107,7 +107,9 @@ In order to successfully implement this example, you need to have some mp4 files
 
 
 
-        myPlayer.adMarkers({
+        myPlayer.adMarkers();
+
+        myPlayer.adMarkers().setMarkers({
             markers: [
                 // In this example, we use server hosted mp4 only
                 {time: 20}, 

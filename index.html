@@ -20,7 +20,8 @@
   <script>
     (function(window, videojs) {
       const examplePlayer = window.examplePlayer = videojs('videojs-ad-markers-player');
-      const adMarkers = window.adMarkers = examplePlayer.adMarkers({
+      const adMarkers = window.adMarkers = examplePlayer.adMarkers();
+      examplePlayer.adMarkers().setMarkers({
         markers: [
           // In this example, we use server hosted mp4 only
           {time: 10},
