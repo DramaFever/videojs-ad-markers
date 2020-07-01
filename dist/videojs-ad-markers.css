@@ -1,0 +1,2 @@
+/*! @name @videojs-ad-markers/videojs-ad-markers @version 2.0.0 @license MIT */
+.vjs-admarker,.vjs-admarker-announcer{position:absolute;left:0;top:1.3em;opacity:1;height:4px;width:7px;background-color:red;transition:opacity .2s ease;-webkit-transition:opacity .2s ease;-moz-transition:opacity .2s ease}.vjs-admarker-announcer{background-color:#ff0}

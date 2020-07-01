@@ -1,36 +1,35 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Videojs Ad Markers](#videojs-ad-markers)
+  - [What's the goal](#whats-the-goal)
+  - [Features](#features)
+  - [Example](#example)
+    - [Developer example](#developer-example)
+  - [History Log](#history-log)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 Videojs Ad Markers
 =======================
-2015-12-06
+2020-06-26
 
 
-Plugin for videojs which provides basic functionality to implement an advertising system.
-
-
-It depends from [jquery](https://jquery.com/).
-
+Plugin for videojs which provides basic functionality for ad markers.
 
 
 What's the goal
 --------------------
 
-The goal is to generate advertising that comes in the middle of a video (aka mid-rolls).
+The goal is to generate ad markers that come in the middle of a video (aka mid-rolls).
 A lot like youtube.com does.
-
-A photo might actually give you a better idea:
-
-![ad markers](http://s19.postimg.org/6sq8qb5pf/ad_markers.png)
-
-
-See the yellow squares on the timeline?
-Each of them represents a point in time where we will play an ad.
-
 
 
 Features
 --------------------
 
 - easy timeline point customization via css
-- designed to work with player.currentTime (whatever that means) 
 
 
 Example
@@ -48,17 +47,14 @@ In order to successfully implement this example, you need to have some mp4 files
 <html>
 <head>
     
-    <script src="http://vjs.zencdn.net/5.3.0/video.js"></script>
-    <link href="http://vjs.zencdn.net/5.3.0/video-js.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/7.x.x/video.js"></script>
+    <link href="http://vjs.zencdn.net/7.x.x/video-js.css" rel="stylesheet">
 
-    <!-- If you'd like to support IE8 -->
-    <script src="http://vjs.zencdn.net/ie8/1.1.0/videojs-ie8.min.js"></script>
-    
     
     <!-- ad markers plugin, depends from jquery -->
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>    
-    <script src="/js/vjs-5.3.0/plugins/admarkers/ad-markers.js"></script>
-    <link href="/js/vjs-5.3.0/plugins/admarkers/ad-markers.css" rel="stylesheet">    
+    <script src="/dist/videojs-ad-markers.js"></script>
+    <link href="/dist/videojs-ad-markers.css" rel="stylesheet">    
 </head>
 
 
@@ -94,7 +90,7 @@ In order to successfully implement this example, you need to have some mp4 files
 
 <script>
 
-    (function ($) {
+    (function () {
 
 
         //------------------------------------------------------------------------------/
@@ -111,26 +107,16 @@ In order to successfully implement this example, you need to have some mp4 files
 
 
 
-        myPlayer.adMarkers({
+        myPlayer.adMarkers();
+
+        myPlayer.adMarkers().setMarkers({
             markers: [
                 // In this example, we use server hosted mp4 only
-                {time: 20, ad: "/mp4/matrix.mp4"}, 
-                {time: 50, ad: "/mp4/beer.mp4"},
-                {time: 80, ad: "/mp4/pont-espion.mp4"},
-                {time: 180, ad: "/mp4/www-uponastar.mp4"}
-            ],
-            prepareNextAd: function(nextMarker){
-                console.log("Preparing next marker");
-                console.log(nextMarker);
-                adsPlayer.src(nextMarker.ad);
-                adsPlayer.load();
-            },
-            playAd: function(marker){
-                console.log("playing ad");
-                console.log(marker);
-                myPlayer.pause();
-                adsPlayer.play();
-            }
+                {time: 20}, 
+                {time: 50},
+                {time: 80},
+                {time: 180}
+            ]
         });
 
 	    /**
@@ -141,7 +127,7 @@ In order to successfully implement this example, you need to have some mp4 files
             myPlayer.play();
         });
 
-    })(jQuery);
+    })();
 </script>
 
 </body>
@@ -150,47 +136,14 @@ In order to successfully implement this example, you need to have some mp4 files
 ```
 
  
- 
 Note: in the above example I use a default video for the ad video container, so that there is no js error.   
  
  
- 
- 
- 
-How does it work?
------------------------
-
-
-### Which callbacks
-
-Each marker is represented by a "square" on the timeline.
-The big picture is that when the playhead reaches a square, it triggers the playAd callback,
-and then triggers the prepareNextAd callback.
-
-So, if you have 5 points in your timeline, when you reach point 3, then the ad#3 is played,
-and ad#4 is prepared.
-
-More info in the source code.
-
-
-### What's the mechanism to display ad
-
-This plugin is originally designed to work with two video containers (the video html tag): 
-one for the main video, and one for the ads.
-
-The ads container should be updated (see my examples above) on every timeline ad point.
-Also, you should handle the visibility (using a css class with display:none) of the video containers so that
-only the appropriate video container shows up. 
-I personally use a css class named shadowed, and using jquery I remove/add this css class on the appropriate video container.
-
-
-
-
-
-
-History Log
+ History Log
 ------------------
-    
+- 2.0.0 -- 2020-06-26
+
+    - rewrite in ES6 and remove unnecessary functionality
     
 - 1.0.0 -- 2015-12-07
 
